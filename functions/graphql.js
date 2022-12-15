@@ -1,6 +1,6 @@
-const { createApolloServerLambda } = require('./bundle/apolloServer');
+import createApolloServer from './bundle/apolloServer';
 
-const server = createApolloServerLambda();
+const server = createApolloServer();
 
 exports.handler = server.createHandler({
   cors: {
