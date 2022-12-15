@@ -1,4 +1,4 @@
-import createApolloServer from './bundle/apolloServer';
+import { createApolloServer } from './bundle/apolloServer';
 
 const server = createApolloServer();
 

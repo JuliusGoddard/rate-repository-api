@@ -25,7 +25,7 @@ const apolloErrorFormatter = (error) => {
   return normalizedError;
 };
 
-const createApolloServer = () => {
+export const createApolloServer = () => {
   return new ApolloServer({
     resolvers,
     typeDefs,
@@ -48,5 +48,3 @@ const createApolloServer = () => {
     },
   });
 };
-
-export default createApolloServer;
