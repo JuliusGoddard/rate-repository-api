@@ -1,6 +1,6 @@
 import { ApolloServer, toApolloError, ApolloError } from 'apollo-server';
 import { ValidationError } from 'yup';
-
+const ApolloServerLambda = require('apollo-server-lambda').ApolloServer;
 import AuthService from './utils/authService';
 import createDataLoaders from './utils/createDataLoaders';
 import logger from './utils/logger';
@@ -28,6 +28,30 @@ const apolloErrorFormatter = (error) => {
 
 const createApolloServer = () => {
   return new ApolloServer({
+    resolvers,
+    typeDefs,
+    formatError: apolloErrorFormatter,
+    context: ({ req }) => {
+      const authorization = req.headers.authorization;
+
+      const accessToken = authorization
+        ? authorization.split(' ')[1]
+        : undefined;
+      const dataLoaders = createDataLoaders();
+
+      return {
+        authService: new AuthService({
+          accessToken,
+          dataLoaders,
+        }),
+        dataLoaders,
+      };
+    },
+  });
+};
+
+export const createApolloServerLambda = () => {
+  return new ApolloServerLambda({
     resolvers,
     typeDefs,
     formatError: apolloErrorFormatter,
